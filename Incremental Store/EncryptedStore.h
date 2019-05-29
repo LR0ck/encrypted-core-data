@@ -79,6 +79,17 @@ typedef NS_ENUM(NSInteger, EncryptedStoreError)
 #pragma mark - Passphrase manipulation
 #pragma mark - Public
 
+
+/**
+ @discussion Create index on table
+
+ @param indexName name for index
+ @param tableName name of table
+ @param indexFields NSArray<NSString*>* array of fields to index
+ @return The status of operation.
+ */
+- (BOOL)createIndex:(NSString*)indexName onTable:(NSString*)tableName indexFields:(NSArray*)indexFields;
+
 /**
  @discussion Check old passphrase and if success change old passphrase to new passphrase.
  
@@ -203,6 +214,7 @@ typedef NS_ENUM(NSInteger, EncryptedStoreError)
 + (NSPersistentStoreCoordinator *)makeStoreWithOptions:(NSDictionary *)options managedObjectModel:(NSManagedObjectModel *)objModel error:(NSError * __autoreleasing*)error;
 + (NSPersistentStoreCoordinator *)coordinator:(NSPersistentStoreCoordinator *)coordinator byAddingStoreAtURL:(NSURL *)url configuration:(NSString *)configuration options:(NSDictionary *)options error:(NSError * __autoreleasing*)error;
 + (NSPersistentStoreDescription *)makeDescriptionWithOptions:(NSDictionary *)options configuration:(NSString *)configuration error:(NSError * __autoreleasing*)error API_AVAILABLE(macosx(10.12),ios(10.0),tvos(10.0),watchos(3.0));
+
 @end
 
 @interface EncryptedStore (Configuration)

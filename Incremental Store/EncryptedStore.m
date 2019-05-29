@@ -1718,6 +1718,31 @@ static void dbsqliteStripCaseDiacritics(sqlite3_context *context, int argc, cons
     return YES;
 }
 
+- (BOOL)createIndex:(NSString*)indexName onTable:(NSString*)tableName indexFields:(NSArray*)indexFields {
+    
+    NSMutableArray * indexFieldsMapped = [NSMutableArray new];
+    for (NSString* indexField in indexFields) {
+        [indexFieldsMapped addObject:[NSString stringWithFormat:@"`%@`", indexField, nil]];
+    }
+
+    NSString * indexDescription = [indexFieldsMapped componentsJoinedByString:@","];
+
+
+    NSString * query = [NSString stringWithFormat:
+                        @"CREATE INDEX %@_INDEX ON %@ (%@)",
+                        indexName,
+                        tableName,
+                        indexDescription,
+                        nil];
+    
+    sqlite3_stmt *statement = [self preparedStatementForQuery:query];
+    sqlite3_step(statement);
+
+    BOOL result = (statement != NULL && sqlite3_finalize(statement) == SQLITE_OK);
+
+    return result;
+}
+
 - (BOOL)dropIndicesForEntity:(NSEntityDescription *)entity error:(NSError **)error
 {
     if (entity.superentity) {
